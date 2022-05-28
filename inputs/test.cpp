@@ -3,7 +3,7 @@
 
 int main()
 {
-   hstring my_string("~", false);
+   hstring my_string("~");
    unsigned long int len = 1;
    unsigned long int test_old = cint(my_string);
    unsigned long int test_new = test_old;
@@ -17,8 +17,8 @@ int main()
       test_old = (test_new > test_old) ? test_new : test_old;
    }
 
-   //std::string new_string = cstring(my_string) + "zaasdasd";
-   //my_string = new_string;
+   std::string new_string = cstring(my_string) + "zaasdasd";
+   my_string = new_string;
 
    return 0;
 }

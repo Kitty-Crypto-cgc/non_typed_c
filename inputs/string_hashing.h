@@ -3,6 +3,7 @@ switch case support to string objects by providing an int unique to each string 
 
 #pragma once
 #include <iostream>
+#include "definitions.h"
 
 #ifndef strhing_hashing_h
 #define string_hashing_h
@@ -12,7 +13,8 @@ class hstring
 {
 private:
     int max_len = 19033;
-    bool recalc_max_len = false;
+    bool recalc_max_len = false, muting_errors = false;
+    error__ error_message;
 
     // this struct contains the string and its unique hash.
     struct hashed_string
@@ -78,9 +80,10 @@ private:
     }
 
     // this function stores the passed string during declaration in the struct for hash string and generates the hash, storing it too.
-    void initialise(const char *input_string, bool recalculate_max_len, int new_max_len)
+    void initialise(const char *input_string, bool recalculate_max_len, int new_max_len, bool mute_errors = false)
     {
         recalc_max_len = recalculate_max_len;
+        muting_errors = mute_errors;
 
         my_hashed_string.my_string = input_string;
         if (new_max_len == 0)
@@ -88,12 +91,14 @@ private:
         else
             max_len = new_max_len;
         my_hashed_string.my_hash = hash_string();
-        if (my_hashed_string.my_hash == 1)
+        
+        if (my_hashed_string.my_hash == 1 && !muting_errors)
         {
-            cout << "Error while hashing string ending in: ";
+            error_message = "Error while hashing string ending in: ";
             for (int i = my_hashed_string.my_string.length() - 10; i < my_hashed_string.my_string.length() + 1; i++)
-                cout << my_hashed_string.my_string.c_str()[i];
-            cout << ". String is too long to hash." << endl;
+                error_message += my_hashed_string.my_string.c_str()[i];
+            error_message += ". String is too long to hash";
+            error_message.print_error();
         }
     }
 
@@ -123,17 +128,17 @@ private:
 public:
     // constructors for different types of declarations
 
-    hstring(const char *input_string, bool recalculate_max_len = false, int new_max_len = 0) // for char arrays
+    hstring(const char *input_string, bool recalculate_max_len = false, int new_max_len = 0, bool mute_errors = false) // for char arrays
     {
-        initialise(input_string, recalculate_max_len, new_max_len);
+        initialise(input_string, recalculate_max_len, new_max_len, mute_errors);
     }
 
-    hstring(std::string input_string, bool recalculate_max_len = false, int new_max_len = 0) // for string literals
+    hstring(std::string input_string, bool recalculate_max_len = false, int new_max_len = 0, bool mute_errors = false) // for string literals
     {
-        initialise(input_string.c_str(), recalculate_max_len, new_max_len);
+        initialise(input_string.c_str(), recalculate_max_len, new_max_len, mute_errors);
     }
 
-    hstring(bool recalculate_max_len = false, int new_max_len = 0)
+    hstring(bool recalculate_max_len = false, int new_max_len = 0, bool mute_errors = false)
     {
         initialise("", recalculate_max_len, new_max_len);
     }
@@ -175,17 +180,17 @@ public:
 
     void operator=(hstring other_string) // from another hstring
     {
-        initialise(other_string.get_string().c_str(), recalc_max_len, max_len);
+        initialise(other_string.get_string().c_str(), recalc_max_len, max_len, muting_errors);
     }
 
     void operator=(std::string other_string) // from another string literal
     {
-        initialise(other_string.c_str(), recalc_max_len, max_len);
+        initialise(other_string.c_str(), recalc_max_len, max_len, muting_errors);
     }
 
     void operator=(const char *other_string) // from a string array
     {
-        initialise(other_string, recalc_max_len, max_len);
+        initialise(other_string, recalc_max_len, max_len, muting_errors);
     }
 };
 

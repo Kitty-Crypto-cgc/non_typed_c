@@ -79,6 +79,44 @@ public:
         }
     }
 
+    void operator=(const char* other_string)
+    {
+        change_text(other_string);
+        initialised = true;
+    }
+
+    void operator+=(const char* other_string)
+    {
+        string new_text = error_text + other_string;
+        change_text(new_text);
+        initialised = true;
+    }
+
+    void operator+=(char other_string)
+    {
+        string new_text = error_text + other_string;
+        change_text(new_text);
+        initialised = true;
+    }
+
+    error__ operator+(const char* other_string)
+    {
+        string new_text = error_text + other_string;
+        error__ output;
+
+        output.change_text(new_text);
+        return output;
+    }
+    
+    error__ operator+(char other_string)
+    {
+        string new_text = error_text + other_string;
+        error__ output;
+
+        output.change_text(new_text);
+        return output;
+    }
+
     void lock() { locked = true; }
     void unlock() { locked = false; }
 
