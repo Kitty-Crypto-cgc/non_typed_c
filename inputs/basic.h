@@ -8,6 +8,8 @@ class basic_input : public multitype
 protected:
     __object__ input;
 
+private:
+
 public:
     basic_input()
     {
@@ -248,117 +250,117 @@ public:
         print_error(error_message, add_endl);
     }
 
-    Lint cast_to_int(basic_input *caster)
+    Lint cast_to_int()
     {
         Lint output = 0;
-        switch (caster->input.datatype)
+        switch (input.datatype)
         {
             case __char__:
-                output = (Lint)caster->input.value.char_;
+                output = (Lint)input.value.char_;
                 break;
             case __byte__:
-                output = (Lint)caster->input.value.byte_;
+                output = (Lint)input.value.byte_;
                 break;
             case __ubyte__:
-                output = (Lint)caster->input.value.ubyte_;
+                output = (Lint)input.value.ubyte_;
                 break;
             case __int__:
-                output = caster->input.value.int_;
+                output = input.value.int_;
                 break;
             case __sint__:
-                output = (Lint)caster->input.value.sint_;
+                output = (Lint)input.value.sint_;
                 break;
             case __lint__:
-                output = (Lint)caster->input.value.lint_;
+                output = (Lint)input.value.lint_;
                 break;
             case __uint__:
-                output = (Lint)caster->input.value.uint_;
+                output = (Lint)input.value.uint_;
                 break;
             case __usint__:
-                output = (Lint)caster->input.value.usint_;
+                output = (Lint)input.value.usint_;
                 break;
             case __ulint__:
-                output = (Lint)caster->input.value.ulint_;
+                output = (Lint)input.value.ulint_;
                 break;
             case __float__:
-                output = round((Lint)caster->input.value.float_);
+                output = round((Lint)input.value.float_);
                 break;
             case __double__:
-                output = round((Lint)caster->input.value.double_);
+                output = round((Lint)input.value.double_);
                 break;
             case __louble__:
-                output = round((Lint)caster->input.value.louble_);
+                output = round((Lint)input.value.louble_);
                 break;
             case __bool__:
-                if (caster->input.value.bool_ == true)
+                if (input.value.bool_ == true)
                     output = 1;
                 else
                     output = 0;
                 break;
             case __tern__:
-                output = (Lint)caster->input.value.tern_;
+                output = (Lint)input.value.tern_;
                 break;
             default:
                 String error_message;
-                error_message = "Cannot typecast " + print_datatype(caster->get_datatype(), true) + " into int"; 
+                error_message = "Cannot typecast " + print_datatype(get_datatype(), true) + " into int"; 
                 print_error(error_message);
         }
         return output;
     }
 
-    Louble cast_to_double(basic_input *caster)
+    Louble cast_to_double()
     {
         Louble output = 0;
-        switch (caster->input.datatype)
+        switch (input.datatype)
         {
             case __char__:
-                output = (Louble)caster->input.value.char_;
+                output = (Louble)input.value.char_;
                 break;
             case __byte__:
-                output = (Louble)caster->input.value.byte_;
+                output = (Louble)input.value.byte_;
                 break;
             case __ubyte__:
-                output = (Louble)caster->input.value.ubyte_;
+                output = (Louble)input.value.ubyte_;
                 break;
             case __int__:
-                output = (Louble)caster->input.value.int_;
+                output = (Louble)input.value.int_;
                 break;
             case __sint__:
-                output = (Louble)caster->input.value.sint_;
+                output = (Louble)input.value.sint_;
                 break;
             case __lint__:
-                output = (Louble)caster->input.value.lint_;
+                output = (Louble)input.value.lint_;
                 break;
             case __uint__:
-                output = (Louble)caster->input.value.uint_;
+                output = (Louble)input.value.uint_;
                 break;
             case __usint__:
-                output = (Louble)caster->input.value.usint_;
+                output = (Louble)input.value.usint_;
                 break;
             case __ulint__:
-                output = (Louble)caster->input.value.ulint_;
+                output = (Louble)input.value.ulint_;
                 break;
             case __float__:
-                output = (Louble)caster->input.value.float_;
+                output = (Louble)input.value.float_;
                 break;
             case __double__:
-                output = (Louble)caster->input.value.double_;
+                output = (Louble)input.value.double_;
                 break;
             case __louble__:
-                output = caster->input.value.louble_;
+                output = input.value.louble_;
                 break;
             case __bool__:
-                if (caster->input.value.bool_ == true)
+                if (input.value.bool_ == true)
                     output = 1;
                 else
                     output = 0;
                 break;
             case __tern__:
-                output = (Louble)caster->input.value.tern_;
+                output = (Louble)input.value.tern_;
                 break;
             default:
                 String error_message;
-                error_message = "Cannot typecast " + print_datatype(caster->get_datatype(), true) + " into double"; 
+                error_message = "Cannot typecast " + print_datatype(get_datatype(), true) + " into double"; 
                 print_error(error_message);
         }
         return output;
