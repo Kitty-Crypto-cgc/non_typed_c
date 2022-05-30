@@ -5,47 +5,78 @@
 
 class basic_input : public multitype
 {
-protected:
-    __object__ input;
-
-private:
-
 public:
     basic_input()
     {
         initialised = false;
     }
 
+    void initialise()
+    {
+        initialised = true;
+    }
+
     void define_object(char in_datatype)
     {
         input.datatype = in_datatype;
-        
+
         switch (in_datatype)
         {
-            case __byte__:
-            case __ubyte__:
-            case __int__:
-            case __sint__:
-            case __lint__:
-            case __uint__:
-            case __usint__:
-            case __ulint__:
-            case __float__:
-            case __double__:
-            case __louble__:
-                input.objectype = __numeric__;
-                break;
-            case __char__:
-            case __string__:
-                input.objectype = __alphanumeric__;
-                break;
-            case __bool__:
-            case __tern__:
-                input.objectype = __logic__;
-                break;
-            default:
-                input.objectype = __undefined_objectype__;
-                break;
+        case __byte__:
+        case __ubyte__:
+        case __int__:
+        case __sint__:
+        case __lint__:
+        case __uint__:
+        case __usint__:
+        case __ulint__:
+        case __float__:
+        case __double__:
+        case __louble__:
+            input.objectype = __numeric__;
+            break;
+        case __char__:
+        case __string__:
+            input.objectype = __alphanumeric__;
+            break;
+        case __bool__:
+        case __tern__:
+            input.objectype = __logic__;
+            break;
+        default:
+            input.objectype = __undefined_objectype__;
+            break;
+        }
+    }
+
+    void recast(char in_datatype)
+    {
+        switch (in_datatype)
+        {
+        case __byte__:
+        case __ubyte__:
+        case __int__:
+            input.value.int_ = cast_to_int();
+            define_object(__int__);
+            break;
+        case __sint__:
+        case __lint__:
+        case __uint__:
+        case __usint__:
+        case __ulint__:
+        case __float__:
+        case __double__:
+        case __louble__:
+            input.value.louble_ = cast_to_double();
+            define_object(__louble__);
+            break;
+        case __char__:
+        case __string__:
+        case __bool__:
+        case __tern__:
+        default:
+            define_object(__undefined_datatype__);
+            break;
         }
     }
 
@@ -120,49 +151,10 @@ public:
         return output;
     }
 
-    virtual void define_compatibilities()
-    {
-        switch (input.objectype)
-        {
-        case __numeric__:
-            input.size_of_compat = 11;
-            input.compatible_types = new char[input.size_of_compat];
-            input.compatible_types[0] = __byte__;
-            input.compatible_types[1] = __ubyte__;
-            input.compatible_types[2] = __int__;
-            input.compatible_types[3] = __sint__;
-            input.compatible_types[4] = __lint__;
-            input.compatible_types[5] = __uint__;
-            input.compatible_types[6] = __usint__;
-            input.compatible_types[7] = __ulint__;
-            input.compatible_types[8] = __float__;
-            input.compatible_types[9] = __double__;
-            input.compatible_types[10] = __louble__;
-            break;
-        case __alphanumeric__:
-            input.size_of_compat = 2;
-            input.compatible_types = new char[input.size_of_compat];
-            input.compatible_types[0] = __char__;
-            input.compatible_types[1] = __string__;
-            break;
-        case __logic__:
-            input.size_of_compat = 2;
-            input.compatible_types = new char[input.size_of_compat];
-            input.compatible_types[0] = __bool__;
-            input.compatible_types[1] = __tern__;
-            break;
-        default:
-            input.size_of_compat = 1;
-            input.compatible_types = new char[input.size_of_compat];
-            input.compatible_types[0] = __undefined_datatype__;
-            break;
-        }
-    }
-
     bool are_compatibile(basic_input *input_1, basic_input *input_2, bool two_inputs = true)
     {
         bool result = false;
-        
+
         char *the_compatible_types = input_1->get_compatible_types();
 
         char datatype2 = input_2->get_datatype();
@@ -255,55 +247,55 @@ public:
         Lint output = 0;
         switch (input.datatype)
         {
-            case __char__:
-                output = (Lint)input.value.char_;
-                break;
-            case __byte__:
-                output = (Lint)input.value.byte_;
-                break;
-            case __ubyte__:
-                output = (Lint)input.value.ubyte_;
-                break;
-            case __int__:
-                output = input.value.int_;
-                break;
-            case __sint__:
-                output = (Lint)input.value.sint_;
-                break;
-            case __lint__:
-                output = (Lint)input.value.lint_;
-                break;
-            case __uint__:
-                output = (Lint)input.value.uint_;
-                break;
-            case __usint__:
-                output = (Lint)input.value.usint_;
-                break;
-            case __ulint__:
-                output = (Lint)input.value.ulint_;
-                break;
-            case __float__:
-                output = round((Lint)input.value.float_);
-                break;
-            case __double__:
-                output = round((Lint)input.value.double_);
-                break;
-            case __louble__:
-                output = round((Lint)input.value.louble_);
-                break;
-            case __bool__:
-                if (input.value.bool_ == true)
-                    output = 1;
-                else
-                    output = 0;
-                break;
-            case __tern__:
-                output = (Lint)input.value.tern_;
-                break;
-            default:
-                String error_message;
-                error_message = "Cannot typecast " + print_datatype(get_datatype(), true) + " into int"; 
-                print_error(error_message);
+        case __char__:
+            output = (Lint)input.value.char_;
+            break;
+        case __byte__:
+            output = (Lint)input.value.byte_;
+            break;
+        case __ubyte__:
+            output = (Lint)input.value.ubyte_;
+            break;
+        case __int__:
+            output = input.value.int_;
+            break;
+        case __sint__:
+            output = (Lint)input.value.sint_;
+            break;
+        case __lint__:
+            output = (Lint)input.value.lint_;
+            break;
+        case __uint__:
+            output = (Lint)input.value.uint_;
+            break;
+        case __usint__:
+            output = (Lint)input.value.usint_;
+            break;
+        case __ulint__:
+            output = (Lint)input.value.ulint_;
+            break;
+        case __float__:
+            output = round((Lint)input.value.float_);
+            break;
+        case __double__:
+            output = round((Lint)input.value.double_);
+            break;
+        case __louble__:
+            output = round((Lint)input.value.louble_);
+            break;
+        case __bool__:
+            if (input.value.bool_ == true)
+                output = 1;
+            else
+                output = 0;
+            break;
+        case __tern__:
+            output = (Lint)input.value.tern_;
+            break;
+        default:
+            String error_message;
+            error_message = "Cannot typecast " + print_datatype(get_datatype(), true) + " into int";
+            print_error(error_message);
         }
         return output;
     }
@@ -313,59 +305,185 @@ public:
         Louble output = 0;
         switch (input.datatype)
         {
-            case __char__:
-                output = (Louble)input.value.char_;
-                break;
-            case __byte__:
-                output = (Louble)input.value.byte_;
-                break;
-            case __ubyte__:
-                output = (Louble)input.value.ubyte_;
-                break;
-            case __int__:
-                output = (Louble)input.value.int_;
-                break;
-            case __sint__:
-                output = (Louble)input.value.sint_;
-                break;
-            case __lint__:
-                output = (Louble)input.value.lint_;
-                break;
-            case __uint__:
-                output = (Louble)input.value.uint_;
-                break;
-            case __usint__:
-                output = (Louble)input.value.usint_;
-                break;
-            case __ulint__:
-                output = (Louble)input.value.ulint_;
-                break;
-            case __float__:
-                output = (Louble)input.value.float_;
-                break;
-            case __double__:
-                output = (Louble)input.value.double_;
-                break;
-            case __louble__:
-                output = input.value.louble_;
-                break;
-            case __bool__:
-                if (input.value.bool_ == true)
-                    output = 1;
-                else
-                    output = 0;
-                break;
-            case __tern__:
-                output = (Louble)input.value.tern_;
-                break;
-            default:
-                String error_message;
-                error_message = "Cannot typecast " + print_datatype(get_datatype(), true) + " into double"; 
-                print_error(error_message);
+        case __char__:
+            output = (Louble)input.value.char_;
+            break;
+        case __byte__:
+            output = (Louble)input.value.byte_;
+            break;
+        case __ubyte__:
+            output = (Louble)input.value.ubyte_;
+            break;
+        case __int__:
+            output = (Louble)input.value.int_;
+            break;
+        case __sint__:
+            output = (Louble)input.value.sint_;
+            break;
+        case __lint__:
+            output = (Louble)input.value.lint_;
+            break;
+        case __uint__:
+            output = (Louble)input.value.uint_;
+            break;
+        case __usint__:
+            output = (Louble)input.value.usint_;
+            break;
+        case __ulint__:
+            output = (Louble)input.value.ulint_;
+            break;
+        case __float__:
+            output = (Louble)input.value.float_;
+            break;
+        case __double__:
+            output = (Louble)input.value.double_;
+            break;
+        case __louble__:
+            output = input.value.louble_;
+            break;
+        case __bool__:
+            if (input.value.bool_ == true)
+                output = 1;
+            else
+                output = 0;
+            break;
+        case __tern__:
+            output = (Louble)input.value.tern_;
+            break;
+        default:
+            String error_message;
+            error_message = "Cannot typecast " + print_datatype(get_datatype(), true) + " into double";
+            print_error(error_message);
         }
         return output;
     }
 
+    multitype get_input()
+    {
+        multitype output;
+        switch (input.datatype)
+        {
+        case __char__:
+            output.input.value.char_ = input.value.char_;
+            break;
+        case __byte__:
+            output.input.value.byte_ = input.value.byte_;
+            break;
+        case __ubyte__:
+            output.input.value.ubyte_ = input.value.ubyte_;
+            break;
+        case __int__:
+            output.input.value.int_ = input.value.int_;
+            break;
+        case __sint__:
+            output.input.value.sint_ = input.value.sint_;
+            break;
+        case __lint__:
+            output.input.value.lint_ = input.value.lint_;
+            break;
+        case __uint__:
+            output.input.value.uint_ = input.value.uint_;
+            break;
+        case __usint__:
+            output.input.value.usint_ = input.value.usint_;
+            break;
+        case __ulint__:
+            output.input.value.ulint_ = input.value.ulint_;
+            break;
+        case __float__:
+            output.input.value.float_ = input.value.float_;
+            break;
+        case __double__:
+            output.input.value.double_ = input.value.double_;
+            break;
+        case __louble__:
+            output.input.value.louble_ = input.value.louble_;
+            break;
+        case __bool__:
+            output.input.value.bool_ = input.value.bool_;
+            break;
+        case __tern__:
+            output.input.value.tern_ = input.value.tern_;
+            break;
+        default:
+            String error_message;
+            error_message = "Cannot get " + print_datatype(get_datatype(), true);
+            print_error(error_message);
+        }
+        return output;
+    }
+
+    virtual void print_input(bool add_endl = true, String operation = "printig")
+    {
+        if (is_initialised())
+        {
+            switch (input.datatype)
+            {
+            case __char__:
+                cout << input.value.char_;
+                break;
+            case __byte__:
+                cout << input.value.byte_;
+                break;
+            case __ubyte__:
+                cout << input.value.ubyte_;
+                break;
+            case __int__:
+                cout << input.value.int_;
+                break;
+            case __sint__:
+                cout << input.value.sint_;
+                break;
+            case __lint__:
+                cout << input.value.lint_;
+                break;
+            case __uint__:
+                cout << input.value.uint_;
+                break;
+            case __usint__:
+                cout << input.value.usint_;
+                break;
+            case __ulint__:
+                cout << input.value.ulint_;
+                break;
+            case __float__:
+                cout << input.value.float_;
+                break;
+            case __double__:
+                cout << input.value.double_;
+                break;
+            case __louble__:
+                cout << input.value.louble_;
+                break;
+            case __bool__:
+                cout << input.value.bool_;
+                break;
+            case __tern__:
+                cout << input.value.tern_;
+                break;
+            default:
+                String error_message;
+                error_message = "Cannot print " + print_datatype(get_datatype(), true);
+                print_error(error_message);
+            }
+            if (add_endl)
+            {
+                cout << endl;
+            }
+        }
+        else
+            print_not_init_error(operation);
+    }
+
+    void replace_input(multitype new_input)
+    {
+        input.value = new_input.input.value;
+        input.datatype = new_input.input.datatype;
+        input.objectype = new_input.input.objectype;
+        input.compatible_types = new_input.input.compatible_types;
+        input.size_of_compat = new_input.input.size_of_compat;
+        initialised = true;
+    }
 };
 
 #endif

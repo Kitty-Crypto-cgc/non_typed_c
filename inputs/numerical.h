@@ -5,57 +5,231 @@
 
 class numerical : public basic_input
 {
+protected:
+    template <typename T>
+    T add(T &lhs, T &rhs)
+    {
+        lhs.plus(rhs);
+        return lhs;
+    }
+    template <typename T>
+    T subtract(T &lhs, T &rhs)
+    {
+        lhs.minus(rhs);
+        return lhs;
+    }
+    template <typename T>
+    T multiply(T &lhs, T &rhs)
+    {
+        lhs.times(rhs);
+        return lhs;
+    }
+    template <typename T>
+    T divide(T &lhs, T &rhs)
+    {
+        lhs.over(rhs);
+        return lhs;
+    }
+
+    bool operands_are_ints(numerical operand1, numerical operand2)
+    {
+        if(operand1.cast_to_double() == operand1.cast_to_int())
+            return (operand2.cast_to_double() == operand2.cast_to_int()) ? true : false;
+        return false;
+    }
+
 public:
-    virtual void save_input(void *input_in)
+
+    numerical(multitype input_in)
+    {
+        input = input_in.input;
+    }
+
+    numerical(__object__ input_in)
+    {
+        input = input_in;
+    }
+
+    numerical()
+    {
+        //
+    }
+
+    void plus(basic_input other_operand, bool mute = false, String operation = "addition")
     {
         switch (input.datatype)
         {
         case __byte__:
-            input.value.byte_ = *static_cast<Byte *>(input_in);
+            // input.value.byte_ = input.value.byte_ + cast_to_double(other_operand);
             break;
         case __ubyte__:
-            input.value.ubyte_ = *static_cast<Ubyte *>(input_in);
+            //
             break;
         case __int__:
-            input.value.int_ = *static_cast<int *>(input_in);
+            input.value.int_ = input.value.int_ + other_operand.cast_to_int();
             break;
         case __sint__:
-            input.value.sint_ = *static_cast<Sint *>(input_in);
+            //
             break;
         case __lint__:
-            input.value.lint_ = *static_cast<Lint *>(input_in);
+            //
             break;
         case __uint__:
-            input.value.uint_ = *static_cast<Uint *>(input_in);
+            //
             break;
         case __usint__:
-            input.value.usint_ = *static_cast<Usint *>(input_in);
+            //
             break;
         case __ulint__:
-            input.value.ulint_ = *static_cast<Ulint *>(input_in);
+            //
             break;
         case __float__:
-            input.value.float_ = *static_cast<float *>(input_in);
+            //
             break;
-            input.value.double_ = *static_cast<double *>(input_in);
+            //
             break;
         case __louble__:
-            input.value.louble_ = *static_cast<Louble *>(input_in);
+            input.value.louble_ = input.value.louble_ + other_operand.cast_to_double();
             break;
-        default:
-            print_error("Error: unrecognised type ");
         }
     }
-    virtual void plus(basic_input other_operand, bool mute = false, String operation = "addition") = 0;
-    virtual void minus(basic_input other_operand, bool mute = false, String operation = "subtraction") = 0;
-    virtual void times(basic_input other_operand, bool mute = false, String operation = "multiplication") = 0;
-    virtual void over(basic_input other_operand, bool mute = false, String operation = "division") = 0;
-    // virtual void power(basic_input other_operand, bool mute = false, String operation = "potentiation") = 0;
 
-    virtual bool check_size(basic_input *input_1, basic_input *input_2, Louble buffer, String operation, bool mute = false) = 0;
-    virtual bool check_size(basic_input *other_input, Louble buffer, String operation, bool mute) = 0;
+    void times(basic_input other_operand, bool mute = false, String operation = "multiplication")
+    {
+        switch (input.datatype)
+        {
+        case __byte__:
+            // input.value.byte_ = input.value.byte_ + cast_to_double(other_operand);
+            break;
+        case __ubyte__:
+            //
+            break;
+        case __int__:
+            input.value.int_ = input.value.int_ * other_operand.cast_to_int();
+            break;
+        case __sint__:
+            //
+            break;
+        case __lint__:
+            //
+            break;
+        case __uint__:
+            //
+            break;
+        case __usint__:
+            //
+            break;
+        case __ulint__:
+            //
+            break;
+        case __float__:
+            //
+            break;
+            //
+            break;
+        case __louble__:
+            input.value.louble_ = input.value.louble_ * other_operand.cast_to_double();
+            break;
+        }
+    }
 
-    virtual void print_input(bool add_endl = true, String operation = "printing") = 0;
+    void minus(basic_input other_operand, bool mute = false, String operation = "subtraction")
+    {
+        switch (input.datatype)
+        {
+        case __byte__:
+            // input.value.byte_ = input.value.byte_ + cast_to_double(other_operand);
+            break;
+        case __ubyte__:
+            //
+            break;
+        case __int__:
+            input.value.int_ = input.value.int_ - other_operand.cast_to_int();
+            break;
+        case __sint__:
+            //
+            break;
+        case __lint__:
+            //
+            break;
+        case __uint__:
+            //
+            break;
+        case __usint__:
+            //
+            break;
+        case __ulint__:
+            //
+            break;
+        case __float__:
+            //
+            break;
+            //
+            break;
+        case __louble__:
+            input.value.louble_ = input.value.louble_ - other_operand.cast_to_double();
+            break;
+        }
+    }
+
+    void over(basic_input other_operand, bool mute = false, String operation = "division")
+    {
+        if (other_operand.cast_to_double() == 0.0)
+        {
+            print_error("Error: Dividing by 0");
+            return;
+        }
+
+        switch (input.datatype)
+        {
+        case __byte__:
+            // input.value.byte_ = input.value.byte_ + cast_to_double(other_operand);
+            break;
+        case __ubyte__:
+            //
+            break;
+        case __int__:
+            input.value.int_ = input.value.int_ / other_operand.cast_to_int();
+            break;
+        case __sint__:
+            //
+            break;
+        case __lint__:
+            //
+            break;
+        case __uint__:
+            //
+            break;
+        case __usint__:
+            //
+            break;
+        case __ulint__:
+            //
+            break;
+        case __float__:
+            //
+            break;
+            //
+            break;
+        case __louble__:
+            input.value.louble_ = input.value.louble_ / other_operand.cast_to_double();
+            break;
+        }
+    }
+
+    numerical operator+(numerical other_number)
+    {
+        numerical operand1(input);
+        numerical operand2(other_number.input);
+        numerical output;
+        if(!operands_are_ints(operand1, operand2))
+        {
+            operand1.recast(__louble__);
+            operand2.recast(__louble__);
+        }
+        output = add(operand1, operand2);
+        return output;
+    }
 };
 
 #endif

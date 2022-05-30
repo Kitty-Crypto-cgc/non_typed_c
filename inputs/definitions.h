@@ -14,7 +14,7 @@
 
 using namespace std;
 using String = std::string;
-using Byte = char;
+using Byte = signed char;
 using Ubyte = unsigned char;
 using Sint = signed short int;
 using Lint = signed long int;
@@ -79,13 +79,13 @@ public:
         }
     }
 
-    void operator=(const char* other_string)
+    void operator=(const char *other_string)
     {
         change_text(other_string);
         initialised = true;
     }
 
-    void operator+=(const char* other_string)
+    void operator+=(const char *other_string)
     {
         string new_text = error_text + other_string;
         change_text(new_text);
@@ -99,7 +99,7 @@ public:
         initialised = true;
     }
 
-    error__ operator+(const char* other_string)
+    error__ operator+(const char *other_string)
     {
         string new_text = error_text + other_string;
         error__ output;
@@ -107,7 +107,7 @@ public:
         output.change_text(new_text);
         return output;
     }
-    
+
     error__ operator+(char other_string)
     {
         string new_text = error_text + other_string;
@@ -198,10 +198,196 @@ protected:
         Ubyte size_of_compat;
     };
 
+    virtual void define_compatibilities()
+    {
+        switch (input.objectype)
+        {
+        case __numeric__:
+            input.size_of_compat = 11;
+            input.compatible_types = new char[input.size_of_compat];
+            input.compatible_types[0] = __byte__;
+            input.compatible_types[1] = __ubyte__;
+            input.compatible_types[2] = __int__;
+            input.compatible_types[3] = __sint__;
+            input.compatible_types[4] = __lint__;
+            input.compatible_types[5] = __uint__;
+            input.compatible_types[6] = __usint__;
+            input.compatible_types[7] = __ulint__;
+            input.compatible_types[8] = __float__;
+            input.compatible_types[9] = __double__;
+            input.compatible_types[10] = __louble__;
+            break;
+        case __alphanumeric__:
+            input.size_of_compat = 2;
+            input.compatible_types = new char[input.size_of_compat];
+            input.compatible_types[0] = __char__;
+            input.compatible_types[1] = __string__;
+            break;
+        case __logic__:
+            input.size_of_compat = 2;
+            input.compatible_types = new char[input.size_of_compat];
+            input.compatible_types[0] = __bool__;
+            input.compatible_types[1] = __tern__;
+            break;
+        default:
+            input.size_of_compat = 1;
+            input.compatible_types = new char[input.size_of_compat];
+            input.compatible_types[0] = __undefined_datatype__;
+            break;
+        }
+    }
+
 public:
+    __object__ input;
+
     multitype()
     {
         initialised = false;
+    }
+
+    void operator=(multitype other_object)
+    {
+        input.value = other_object.input.value;
+        input.datatype = other_object.input.datatype;
+        input.objectype = other_object.input.objectype;
+        input.compatible_types = other_object.input.compatible_types;
+        input.size_of_compat = other_object.input.size_of_compat;
+        initialised = true;
+    }
+
+    void operator=(Byte other_object)
+    {
+        input.value.byte_ = other_object;
+        input.datatype = __byte__;
+        input.objectype = __numeric__;
+        define_compatibilities();
+        initialised = true;
+    }
+
+    void operator=(Ubyte other_object)
+    {
+        input.value.ubyte_ = other_object;
+        input.datatype = __ubyte__;
+        input.objectype = __numeric__;
+        define_compatibilities();
+        initialised = true;
+    }
+
+    void operator=(int other_object)
+    {
+        input.value.int_ = other_object;
+        input.datatype = __int__;
+        input.objectype = __numeric__;
+        define_compatibilities();
+        initialised = true;
+    }
+
+    void operator=(Sint other_object)
+    {
+        input.value.sint_ = other_object;
+        input.datatype = __sint__;
+        input.objectype = __numeric__;
+        define_compatibilities();
+        initialised = true;
+    }
+
+    void operator=(Lint other_object)
+    {
+        input.value.lint_ = other_object;
+        input.datatype = __lint__;
+        input.objectype = __numeric__;
+        define_compatibilities();
+        initialised = true;
+    }
+
+    void operator=(Uint other_object)
+    {
+        input.value.uint_ = other_object;
+        input.datatype = __uint__;
+        input.objectype = __numeric__;
+        define_compatibilities();
+        initialised = true;
+    }
+
+    void operator=(Usint other_object)
+    {
+        input.value.usint_ = other_object;
+        input.datatype = __usint__;
+        input.objectype = __numeric__;
+        define_compatibilities();
+        initialised = true;
+    }
+
+    void operator=(Ulint other_object)
+    {
+        input.value.ulint_ = other_object;
+        input.datatype = __ulint__;
+        input.objectype = __numeric__;
+        define_compatibilities();
+        initialised = true;
+    }
+
+    void operator=(float other_object)
+    {
+        input.value.float_ = other_object;
+        input.datatype = __float__;
+        input.objectype = __numeric__;
+        define_compatibilities();
+        initialised = true;
+    }
+
+    void operator=(double other_object)
+    {
+        input.value.double_ = other_object;
+        input.datatype = __double__;
+        input.objectype = __numeric__;
+        define_compatibilities();
+        initialised = true;
+    }
+
+    void operator=(Louble other_object)
+    {
+        input.value.louble_ = other_object;
+        input.datatype = __louble__;
+        input.objectype = __numeric__;
+        define_compatibilities();
+        initialised = true;
+    }
+
+    void operator=(char other_object)
+    {
+        input.value.char_ = other_object;
+        input.datatype = __char__;
+        input.objectype = __alphanumeric__;
+        define_compatibilities();
+        initialised = true;
+    }
+
+    void operator=(String other_object)
+    {
+        input.value.string_ = other_object;
+        input.datatype = __string__;
+        input.objectype = __alphanumeric__;
+        define_compatibilities();
+        initialised = true;
+    }
+
+    void operator=(bool other_object)
+    {
+        input.value.bool_ = other_object;
+        input.datatype = __bool__;
+        input.objectype = __logic__;
+        define_compatibilities();
+        initialised = true;
+    }
+
+    void operator=(Tern other_object)
+    {
+        input.value.char_ = other_object;
+        input.datatype = __tern__;
+        input.objectype = __logic__;
+        define_compatibilities();
+        initialised = true;
     }
 };
 

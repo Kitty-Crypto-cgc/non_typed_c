@@ -1,14 +1,16 @@
-#include "inputs.h"
+#include "var.h"
 #include "string_hashing.h"
 
 int main()
 {
 
-   int_input a = 5;
-   int_input b = 1;
+   var a = 4;
 
-   int_input c = a + b;
+   var b = 4;
 
-   c.print_input();
+   var c = (a + b);
+
+   c.print_value();
+   c.print_datatype();
    return 0;
 }
